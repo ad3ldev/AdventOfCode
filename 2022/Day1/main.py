@@ -15,4 +15,6 @@ for elf in elves:
         if snack != '':
             sum += int(snack)
     calories.append(sum)
-print(max(calories))
+calories.sort()
+print(calories[-1])
+print(calories[-1]+calories[-2]+calories[-3])
