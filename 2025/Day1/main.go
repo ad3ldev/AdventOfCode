@@ -10,18 +10,24 @@ import (
 
 var dial = 50
 var count = 0
+var passes = 0
 
-func leftRotate(value int) {
-	dial -= value
-	for dial < 0 {
-		dial += 100
+func mod(a, b int) int {
+	m := a % b
+	if m < 0 {
+		m += b
 	}
+	return m
+}
+func leftRotate(value int) {
+	passes += (mod(-dial, 100) + value) / 100
+	dial -= value
+	dial = mod(dial, 100)
 }
 func rightRotate(value int) {
+	passes += (mod(dial, 100) + value) / 100
 	dial += value
-	for dial > 99 {
-		dial -= 100
-	}
+	dial = mod(dial, 100)
 }
 
 var rotationDirection = map[string]func(value int){
@@ -33,6 +39,7 @@ func solve(instruction string) {
 	direction := string(instruction[0])
 	steps, err := strconv.Atoi(instruction[1:])
 	if err != nil {
+		fmt.Println("Error")
 		return
 	}
 	rotationDirection[direction](steps)
@@ -52,5 +59,6 @@ func main() {
 		line := scanner.Text()
 		solve(line)
 	}
-	fmt.Println(count)
+	fmt.Println("Count:\t", count)
+	fmt.Println("Passes:\t", passes)
 }
