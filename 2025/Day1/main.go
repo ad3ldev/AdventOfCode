@@ -12,6 +12,11 @@ var dial = 50
 var count = 0
 var passes = 0
 
+var rotationDirection = map[string]func(value int){
+	"L": leftRotate,
+	"R": rightRotate,
+}
+
 func mod(a, b int) int {
 	m := a % b
 	if m < 0 {
@@ -29,12 +34,6 @@ func rightRotate(value int) {
 	dial += value
 	dial = mod(dial, 100)
 }
-
-var rotationDirection = map[string]func(value int){
-	"L": leftRotate,
-	"R": rightRotate,
-}
-
 func solve(instruction string) {
 	direction := string(instruction[0])
 	steps, err := strconv.Atoi(instruction[1:])
