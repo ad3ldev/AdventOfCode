@@ -8,30 +8,6 @@ import (
 	"strings"
 )
 
-type IntSet map[int]struct{}
-
-// NewIntSet creates and returns a new IntSet.
-func NewIntSet() IntSet {
-	return make(IntSet)
-}
-
-// Add adds an element to the set.
-func (s IntSet) Add(element int) {
-	s[element] = struct{}{}
-}
-
-// Contains checks if an element exists in the set.
-func (s IntSet) Contains(element int) bool {
-	_, exists := s[element]
-	return exists
-}
-
-// Remove removes an element from the set.
-type Range struct {
-	first int64
-	last  int64
-}
-
 var invalidCountPart1 int64 = 0
 var invalidCountPart2 int64 = 0
 
@@ -67,7 +43,6 @@ func checkInvalidPart2(id string) {
 		}
 	}
 }
-
 func checkParts(parts []string) bool {
 	set := make(map[string]any)
 	for _, part := range parts {
@@ -78,7 +53,6 @@ func checkParts(parts []string) bool {
 	}
 	return len(set) == 1
 }
-
 func allIds(first int64, last int64) {
 	for i := first; i <= last; i++ {
 		id := strconv.FormatInt(i, 10)
