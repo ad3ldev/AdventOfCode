@@ -8,6 +8,25 @@ import (
 	"strings"
 )
 
+type IntSet map[int]struct{}
+
+// NewIntSet creates and returns a new IntSet.
+func NewIntSet() IntSet {
+	return make(IntSet)
+}
+
+// Add adds an element to the set.
+func (s IntSet) Add(element int) {
+	s[element] = struct{}{}
+}
+
+// Contains checks if an element exists in the set.
+func (s IntSet) Contains(element int) bool {
+	_, exists := s[element]
+	return exists
+}
+
+// Remove removes an element from the set.
 type Range struct {
 	first int64
 	last  int64
@@ -30,24 +49,34 @@ func checkInvalidPart1(id string) {
 }
 func checkInvalidPart2(id string) {
 	idLength := len(id)
-	if idLength%2 != 0 {
-		return
-	}
-	halfs := make([]string, 2)
-	index := 0
-	for i := 0; i <= idLength/2; i += idLength / 2 {
-		j := i + idLength/2
-		halfs[index] = id[i:j]
-		index++
-	}
-	for i := range 1 {
-		for j := 1; j < 2; j++ {
-			if halfs[i] == halfs[j] {
-				idInt, _ := strconv.ParseInt(id, 10, 64)
-				invalidCountPart2 += idInt
-			}
+	for i := 1; i <= idLength/2; i++ {
+		if idLength%i != 0 {
+			continue
+		}
+		parts := make([]string, idLength/i)
+		index := 0
+		for j := 0; j < idLength; j += i {
+			parts[index] = id[j : j+i]
+			index++
+		}
+		invalid := checkParts(parts)
+		if invalid {
+			idInt, _ := strconv.ParseInt(id, 10, 64)
+			invalidCountPart2 += idInt
+			return
 		}
 	}
+}
+
+func checkParts(parts []string) bool {
+	set := make(map[string]any)
+	for _, part := range parts {
+		_, ok := set[part]
+		if !ok {
+			set[part] = true
+		}
+	}
+	return len(set) == 1
 }
 
 func allIds(first int64, last int64) {
